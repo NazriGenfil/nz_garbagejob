@@ -1,4 +1,4 @@
-math = lib.math
+local math = lib.math
 lib.callback.register('nz_garbage:callback:SpawnVehicelSync', function(source, coords, vehname)
     local src = source
     if Config.debug then print(coords, coords.xyz, coords.w) end
@@ -12,3 +12,52 @@ lib.callback.register('nz_garbage:callback:SpawnVehicelSync', function(source, c
         TriggerClientEvent('nz_garbage:client:SyncVehicelData', src, NetworkId)
     end)
 end)
+
+lib.callback.register('nz_garbage:callback:giveReward', function(source, item, status)
+    if not status then return end
+
+    if Config.debug then print(item, status) end
+    local src = source
+    local xPlayer = ESX.GetPlayerFromId(src)
+    if exports.ox_inventory:CanCarryItem(src, item, Config.amountToGive) then
+        local success, response = exports.ox_inventory:AddItem(src, item, Config.amountToGive)
+        if not success then
+            lib.notify({
+                title = 'Terjadi masalah',
+                description = 'Respon Code : '..response,
+                type = 'error'
+            })
+            return 406
+        end
+    else
+        lib.notify({
+            title = 'Tas kamu terlalu penuh',
+            description = 'Harap kosongkan tas kamu',
+            type = 'error'
+        })
+        return 406
+    end
+
+    return 200
+end)
+
+lib.callback.register('nz_garbage:callback:giveMoney', function(source, tipe, amount, status)
+    if not status then return end
+
+    if Config.debug then print(tipe, amount, status) end
+    local src = source
+    local xPlayer = ESX.GetPlayerFromId(src)
+    xPlayer.addAccountMoney(tipe, amount)
+    lib.notify({
+        title = 'Slip gaji',
+        description = 'Berhasil memberikan kamu slip gaji',
+        type = 'success'
+    })
+    return 200
+end)
+  
+ESX.RegisterCommand({'+deletetrash'}, 'user', function(xPlayer, args, showError)
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+    TriggerClientEvent('nz_garbage:client:deletvehicel', xPlayer.source)
+end, false, {help = 'untuk garbage job'})
+RegisterKeyMapping('+deletetrash', 'Grabage Job', 'keyboard', 'e')

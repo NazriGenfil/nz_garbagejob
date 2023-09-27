@@ -8,12 +8,18 @@ Config.location = vec4(-321.5540, -1545.7445, 31.0199, 233.3084)
 Config.PedModel = 'a_m_m_hasjew_01'
 Config.PricePerBag = 1000
 Config.Job = true
-Config.moneyType = 'cash'
+Config.moneyType = 'money'
 Config.JobName = 'garbage'
 Config.vehicelName = 'trash'
 Config.vehicelSpawnLocation = vec4(-323.5988, -1521.7682, 27.5428, 269.3295)
 
-Config.JobCoords = {
+Config.itemlist = {
+    'water',
+    'sandwich',
+}
+Config.amountToGive = 1
+
+Config.JobCoords = { -- tempat parkir kendaraannya (lalu system otomatis akan mencari tong sampah terdekat)
     {x = 114.83280181885, y = -1462.3127441406, z = 29.295083999634},
     {x = -6.0481648445129, y = -1566.2338867188, z = 29.209197998047},
     {x = -1.8858588933945, y = -1729.5538330078, z = 29.300233840942},
